@@ -1,0 +1,45 @@
+# samba-kali.yml / ansible playbook
+---
+- hosts: kali
+  remote_user: vagrant
+  become: yes
+  become_method: "sudo"
+
+  handlers:
+    - name: restart samba
+      service:
+              name: "{{ item }}"
+              state: restarted
+      with_items:
+              - smbd
+              - nmbd
+  tasks:
+    - name: Installer samba
+      apt:
+              name: samba 
+              state: latest
+    - name: Démarrer services samba
+      service:
+              name: "{{ item }}"
+              state: started 
+              enabled: true
+      with_items:
+              - smbd
+              - nmbd
+    - name: Création du dossier public
+      file:
+              path: /srv/samba/commun
+              owner: nobody
+              group: nogroup
+              state: directory
+              mode: 0777
+    - name: Ouvrir le firewall pour samba
+      ufw:
+              rule: allow
+              name: Samba
+    - name: Copier le fichier personnalisé de samba
+      copy:
+              src: /etc/ansible/ansible_samba-master/smb.conf 
+              dest: /etc/samba/smb.conf
+      notify:
+              - restart samba
