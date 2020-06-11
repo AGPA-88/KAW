@@ -39,7 +39,7 @@
               name: Samba
     - name: Copier le fichier personnalisé de samba
       copy:
-              src: /etc/ansible/ansible_samba-master/smb.conf 
+              src: /etc/ansible/KSA-master/smb.conf 
               dest: /etc/samba/smb.conf
       notify:
               - restart samba
