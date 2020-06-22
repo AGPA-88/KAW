@@ -1,0 +1,159 @@
+---
+- name: Install Applications
+  hosts: all
+  tasks:
+          - name: Install IIS Web-Server with sub features and management tools
+            win_feature:
+                    name: Web-Server
+                    state: present
+                    include_sub_features: yes
+                    include_management_tools: yes
+            register: win_feature
+     
+          - name: Install Git
+            win_chocolatey:
+                    name: git
+                    state: present
+
+          - name: Instal VsCode
+            win_chocolatey:
+                    name: vscode
+                    state: present
+
+          - name: Install SumatraPDF
+            win_chocolatey:
+                    name: sumatrapdf
+                    state: present
+
+
+- name: Users & Groups Configuration
+  hosts: all
+  tasks:                    
+
+          - name: Create service user
+            win_user:
+                    name: svc_marte_user
+                    password: p@ssw0rd!
+                    state: present
+                    groups:
+                            - Users
+                            - Administrators
+                            - IIS_IUSRS
+                            - Distributed COM Users
+          
+          - name: Add IIS_IUSRS allow rights
+            win_acl:
+                    path: C:\inetpub\wwwroot
+                    user: IIS_IUSRS
+                    rights: FullControl
+                    type: allow
+                    state: present
+                    inherit: ContainerInherit, ObjectInherit
+                    propagation: 'None'
+
+
+- name: Rights Configuration
+  hosts: all
+  tasks:    
+          - name: Add IIS_IUSRS allow rights
+            win_acl:
+                    path: C:\inetpub\wwwroot
+                    user: IIS_IUSRS
+                    rights: FullControl
+                    type: allow
+                    state: present
+                    inherit: ContainerInherit, ObjectInherit
+                    propagation: 'None'                
+
+          - name: Add program files allow rights
+            win_acl:
+                    path: "{{ item }}"
+                    user: svc_marte_user
+                    rights: FullControl
+                    type: allow
+                    state: present
+                    inherit: ContainerInherit, ObjectInherit
+                    propagation: 'None'
+            with_items:
+                  - C:\Program Files
+                  - C:\Program Files (x86)
+
+- name: Prerequesits
+  hosts: all
+  tasks: 
+          - name: Install .Net Framework
+            win_chocolatey:
+                    name: dotnetfx
+                    state: present
+
+          - name: Install .Net Core Runtime
+            win_chocolatey:
+                    name: dotnetcore-runtime
+                    state: present
+
+          - name: Install .Net Core Hosting Bundle
+            win_chocolatey: 
+                    name: dotnetcore-windowshosting
+                    state: present
+
+          - name: Install Microsoft Visual C++ Redistributable for Visual Studio 2015
+            win_chocolatey:
+                    name: vcredist2015
+                    state: present
+
+          - name: Install  Windows Authorization
+            win_feature:
+                    name: Web-Windows-Auth
+                    state: present
+
+          - name: Install File & iSCI Services
+            win_feature:
+                    name: File-Services
+                    state: present
+
+          - name: Install File Server
+            win_feature:
+                    name: FS-FileServer
+                    state: present
+
+          - name: Install Web Server IIS
+            win_feature:
+                    name: Web-Server
+                    state: present
+
+          - name: Install IIS Management Tools
+            win_feature:
+                    name: Web-Mgmt-Tools
+                    state: present
+
+          - name: Install IIS Management Console
+            win_feature:
+                    name: Web-Mgmt-Console
+                    state: present
+
+          - name: Install .Net Framework 4.5
+            win_feature:
+                    name: NET-Framework-45-ASPNET
+                    state: present
+
+          - name: Install .Net ASP
+            win_feature:
+                    name: Web-Asp-Net45
+                    state: present
+
+          - name: Install Static Content
+            win_feature:
+                    name: Web-Static-Content
+                    state: present
+
+          - name: Install .NET Extensibility 4.7
+            win_feature:
+                    name: Web-Net-Ext45
+                    state: present
+
+          - name: Heap Update
+            win_regedit:
+                    path: HKLM:\SYSTEM\CurrentControlSet\Control\Session Manager\SubSystems
+                    name: Windows
+                    data: '%SystemRoot%\system32\csrss.exe ObjectDirectory=\Windows SharedSection=1024,20480,8192 Windows=On SubSystemType=Windows ServerDll=basesrv,1 ServerDll=winsrv:UserServerDllInitialization,3 ServerDll=sxssrv,4 ProfileControl=Off MaxRequestThreads=16'
+                    type: expandstring
