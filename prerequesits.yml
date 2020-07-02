@@ -10,6 +10,11 @@
                     include_management_tools: yes
             register: win_feature
      
+          - name: Install SQL Server
+            win_chocolatey:
+                    name: sql-server-express
+                    state: present
+     
           - name: Install Git
             win_chocolatey:
                     name: git
