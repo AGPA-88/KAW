@@ -12,7 +12,7 @@
      
           - name: Install SQL Server
             win_chocolatey:
-                    name: sql-server-express
+                    name: sql-server-2017
                     state: present
      
           - name: Install Git
