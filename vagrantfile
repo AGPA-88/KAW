@@ -21,7 +21,8 @@ Vagrant.configure("2") do |wvm|
     end
 
   wvm.vm.provision "shell", inline: <<-SHELL
-    
+    # Uncoment to set French language supported to activate azerty keyboard
+    # Set-WinUserLanguageList -LanguageList fr-FR
     Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))
     Enable-WindowsOptionalFeature -FeatureName Microsoft-Windows-Subsystem-Linux -Online -NoRestart -WarningAction SilentlyContinue
 
