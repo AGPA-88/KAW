@@ -1,0 +1,37 @@
+
+- name: Share Folder Configuration
+  hosts: all
+  tasks: 
+
+          - name: Create directory structure
+            win_file:
+                    path: C:\license
+                    state: directory
+ 
+          - name: Add public company share
+            win_share:
+                    name: license
+                    description: License shared folder
+                    path: C:\license
+                    list: yes
+                    full: Administrators
+                    read: Global
+                    
+- name: Regedit Configuration
+  hosts: all
+  tasks:  
+          - name: Adding DisableStrictNameChecking to regedit
+            win_regedit:
+                    path: HKLM:\SYSTEM\CurrentControlSet\Services\LanmanServer\Parameters
+                    name: DisableStrictNameChecking
+                    data: 1
+                    type: dword
+                    
+          - name: Adding mega-hopex OptionalName to regedit
+            win_regedit:
+                    path: HKLM:\SYSTEM\CurrentControlSet\Services\LanmanServer\Parameters
+                    name: OptionalNames
+                    data: ['mega-hopex']
+                    type: multistring
+
+
