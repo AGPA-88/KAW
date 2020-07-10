@@ -14,8 +14,7 @@
                     description: License shared folder
                     path: C:\license
                     list: yes
-                    full: Administrators
-                    read: Global
+                    full: Users
                     
 - name: Regedit Configuration
   hosts: all
