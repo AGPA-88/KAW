@@ -6,7 +6,7 @@ Vagrant.configure("2") do |wvm|
 
   wvm.vm.box = "mcree/win2019"
   wvm.vm.box_version = "1.0.1584095692"
-#  wvm.disksize.size = "40GB"
+  wvm.disksize.size = "50GB"
 
   wvm.vm.provider "virtualbox" do |v|
     v.name = "Windows Server 2019"
@@ -21,8 +21,8 @@ Vagrant.configure("2") do |wvm|
     end
 
   wvm.vm.provision "shell", inline: <<-SHELL
-    # Uncoment to set French language supported to activate azerty keyboard
-    # Set-WinUserLanguageList -LanguageList fr-FR
+
+    Resize-Partition -DriveLetter C -Size 49gb
     Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))
     Enable-WindowsOptionalFeature -FeatureName Microsoft-Windows-Subsystem-Linux -Online -NoRestart -WarningAction SilentlyContinue
 
@@ -30,9 +30,10 @@ Vagrant.configure("2") do |wvm|
 
   wvm.vm.provision :reload
 
-  wvm.vm.provision "shell", inline: <<-SHELL
-    choco install sql-server-express -y    
-    choco install wsl-kalilinux -y  
+  wvm.vm.provision "shell", inline: <<-SHELL 
+
+    choco install wsl-kalilinux -y 
+    choco install sql-server-express -y     
 
   SHELL
   
@@ -62,20 +63,16 @@ Vagrant.configure("2") do |wvm|
     wsl sudo bash -c "echo 127.0.0.1 >> /etc/ansible/kali"
     wsl sudo bash -c "echo [kali:vars] >> /etc/ansible/kali"
     wsl sudo bash -c "echo ansible_python_interpreter=/usr/bin/python3 >> /etc/ansible/kali" 
-    wsl sudo bash -c "echo ansible_connection=local >> /etc/ansible/kali"
-#    wsl ansible self -m win_ping  
-    wsl mkdir /mnt/c/download
-#    wsl wget https://github.com/AGPA-88/HopexV3-Prerequisits/archive/master.zip
-#    wsl mv master.zip windows.zip
+    wsl sudo bash -c "echo ansible_connection=local >> /etc/ansible/kali" 
     wsl wget https://github.com/AGPA-88/KSA/archive/master.zip
     wsl mv master.zip kali.zip
-#    wsl unzip windows.zip
     wsl unzip kali.zip
-#    wsl mv HopexV3-Prerequesits-master /etc/ansible
     wsl mv KSA-master /etc/ansible
     wsl ansible-playbook -i /etc/ansible/windows /etc/ansible/KSA-master/prerequesits.yml
-    wsl ansible-playbook -i /etc/ansible/kali /etc/ansible/KSA-master/samba-kali.yml
+    wsl ansible-playbook -i /etc/ansible/windows /etc/ansible/KSA-master/sharefolder.yml
 
   SHELL
+
+  wvm.vm.provision :reload
 
 end
