@@ -14,7 +14,12 @@
             win_chocolatey:
                     name: sql-server-2017
                     state: present
-     
+
+          - name: Install Chrome
+            win_chocolatey:
+                    name: googlechrome
+                    state: present
+                    
           - name: Install Git
             win_chocolatey:
                     name: git
