@@ -64,12 +64,12 @@ Vagrant.configure("2") do |wvm|
     wsl sudo bash -c "echo [kali:vars] >> /etc/ansible/kali"
     wsl sudo bash -c "echo ansible_python_interpreter=/usr/bin/python3 >> /etc/ansible/kali" 
     wsl sudo bash -c "echo ansible_connection=local >> /etc/ansible/kali" 
-    wsl wget https://github.com/AGPA-88/KSA/archive/master.zip
+    wsl wget https://github.com/AGPA-88/KAW/archive/master.zip
     wsl mv master.zip kali.zip
     wsl unzip kali.zip
     wsl mv KSA-master /etc/ansible
-    wsl ansible-playbook -i /etc/ansible/windows /etc/ansible/KSA-master/prerequesits.yml
-    wsl ansible-playbook -i /etc/ansible/windows /etc/ansible/KSA-master/sharefolder.yml
+    wsl ansible-playbook -i /etc/ansible/windows /etc/ansible/KAW-master/prerequesits.yml
+    wsl ansible-playbook -i /etc/ansible/windows /etc/ansible/KAW-master/sharefolder.yml
 
   SHELL
 
