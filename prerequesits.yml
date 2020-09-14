@@ -75,19 +75,6 @@
                     inherit: ContainerInherit, ObjectInherit
                     propagation: 'None'                
 
-          - name: Add program files allow rights
-            win_acl:
-                    path: "{{ item }}"
-                    user: svc_marte_user
-                    rights: FullControl
-                    type: allow
-                    state: present
-                    inherit: ContainerInherit, ObjectInherit
-                    propagation: 'None'
-            with_items:
-                  - C:\Program Files
-                  - C:\Program Files (x86)
-
 - name: Prerequesits
   hosts: all
   tasks: 
@@ -161,8 +148,15 @@
                     name: Web-Net-Ext45
                     state: present
 
+#          - name: Adding heap registry entry if it doesn't exist with shell
+#            win_shell: if (-not (Get-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Session Manager\SubSystems" -Name Windows -ErrorAction SilentlyContinue)) {New-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Session Manager\SubSystems" -Name Windows -PropertyType expandstring -Value '%SystemRoot%\system32\csrss.exe ObjectDirectory=\Windows SharedSection=1024,20480,8192 Windows=On SubSystemType=Windows ServerDll=basesrv,1 ServerDll=winsrv:UserServerDllInitialization,3 ServerDll=sxssrv,4 ProfileControl=Off MaxRequestThreads=16'}
+
+#          - name: Update heap registry entry with shell
+#            win_shell: Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Session Manager\SubSystems" -Name Windows -Value '%SystemRoot%\system32\csrss.exe ObjectDirectory=\Windows SharedSection=1024,20480,8192 Windows=On SubSystemType=Windows ServerDll=basesrv,1 ServerDll=winsrv:UserServerDllInitialization,3 ServerDll=sxssrv,4 ProfileControl=Off MaxRequestThreads=16'
+
           - name: Heap Update
             win_regedit:
+                    key: 'HKLM:\SYSTEM\CurrentControlSet\Control\Session Manager\SubSystems\Windows'
                     path: HKLM:\SYSTEM\CurrentControlSet\Control\Session Manager\SubSystems
                     name: Windows
                     data: '%SystemRoot%\system32\csrss.exe ObjectDirectory=\Windows SharedSection=1024,20480,8192 Windows=On SubSystemType=Windows ServerDll=basesrv,1 ServerDll=winsrv:UserServerDllInitialization,3 ServerDll=sxssrv,4 ProfileControl=Off MaxRequestThreads=16'
