@@ -7,30 +7,31 @@
             win_file:
                     path: C:\license
                     state: directory
+
+          - name: Add IIS_IUSRS allow rights
+            win_acl:
+                    path: C:\license
+                    user: IIS_IUSRS
+                    rights: FullControl
+                    type: allow
+                    state: present
+                    inherit: ContainerInherit, ObjectInherit
+                    propagation: 'None'
  
           - name: Add public company share
             win_share:
                     name: license
                     description: License shared folder
                     path: C:\license
-                    list: yes
-                    full: Users
+                    list: 'yes'
+                    full: Everyone
                     
 - name: Regedit Configuration
   hosts: all
   tasks:  
-          - name: Adding DisableStrictNameChecking to regedit
-            win_regedit:
-                    path: HKLM:\SYSTEM\CurrentControlSet\Services\LanmanServer\Parameters
-                    name: DisableStrictNameChecking
-                    data: 1
-                    type: dword
-                    
-          - name: Adding mega-hopex OptionalName to regedit
-            win_regedit:
-                    path: HKLM:\SYSTEM\CurrentControlSet\Services\LanmanServer\Parameters
-                    name: OptionalNames
-                    data: ['mega-hopex']
-                    type: multistring
 
+          - name: Adding DisableStrictNameChecking to regedit with shell
+            win_shell: if (-not (Get-ItemProperty -Path HKLM:\SYSTEM\CurrentControlSet\Services\LanmanServer\Parameters -Name DisableStrictNameChecking -ErrorAction SilentlyContinue)) {New-ItemProperty -Path HKLM:\SYSTEM\CurrentControlSet\Services\LanmanServer\Parameters -Name DisableStrictNameChecking -PropertyType Dword -Value 1}
 
+          - name: Adding mega-hopex OptionalName to regedit with shell
+            win_shell: if (-not (Get-ItemProperty -Path HKLM:\SYSTEM\CurrentControlSet\Services\LanmanServer\Parameters -Name OptionalNames -ErrorAction SilentlyContinue)) {New-ItemProperty -Path HKLM:\SYSTEM\CurrentControlSet\Services\LanmanServer\Parameters -Name OptionalNames -PropertyType Multistring -Value 'mega-hopex'}
