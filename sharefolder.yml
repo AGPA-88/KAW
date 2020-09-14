@@ -30,8 +30,25 @@
   hosts: all
   tasks:  
 
-          - name: Adding DisableStrictNameChecking to regedit with shell
-            win_shell: if (-not (Get-ItemProperty -Path HKLM:\SYSTEM\CurrentControlSet\Services\LanmanServer\Parameters -Name DisableStrictNameChecking -ErrorAction SilentlyContinue)) {New-ItemProperty -Path HKLM:\SYSTEM\CurrentControlSet\Services\LanmanServer\Parameters -Name DisableStrictNameChecking -PropertyType Dword -Value 1}
+          - name: Adding DisableStrictNameChecking to regedit
+            win_regedit:
+                    key: HKLM:\SYSTEM\CurrentControlSet\Services\LanmanServer\Parameters\DisableStrictNameChecking
+                    path: HKLM:\SYSTEM\CurrentControlSet\Services\LanmanServer\Parameters
+                    name: DisableStrictNameChecking
+                    data: 1
+                    type: dword
+                    
+          - name: Adding mega-hopex OptionalName to regedit
+            win_regedit:
+                    key: HKLM:\SYSTEM\CurrentControlSet\Services\LanmanServer\Parameters\OptionalNames
+                    path: HKLM:\SYSTEM\CurrentControlSet\Services\LanmanServer\Parameters
+                    name: OptionalNames
+                    data: ['mega-hopex']
+                    type: multistring
 
-          - name: Adding mega-hopex OptionalName to regedit with shell
-            win_shell: if (-not (Get-ItemProperty -Path HKLM:\SYSTEM\CurrentControlSet\Services\LanmanServer\Parameters -Name OptionalNames -ErrorAction SilentlyContinue)) {New-ItemProperty -Path HKLM:\SYSTEM\CurrentControlSet\Services\LanmanServer\Parameters -Name OptionalNames -PropertyType Multistring -Value 'mega-hopex'}
+
+#          - name: Adding DisableStrictNameChecking to regedit with shell
+#            win_shell: if (-not (Get-ItemProperty -Path HKLM:\SYSTEM\CurrentControlSet\Services\LanmanServer\Parameters -Name DisableStrictNameChecking -ErrorAction SilentlyContinue)) {New-ItemProperty -Path HKLM:\SYSTEM\CurrentControlSet\Services\LanmanServer\Parameters -Name DisableStrictNameChecking -PropertyType Dword -Value 1}
+
+#          - name: Adding mega-hopex OptionalName to regedit with shell
+#            win_shell: if (-not (Get-ItemProperty -Path HKLM:\SYSTEM\CurrentControlSet\Services\LanmanServer\Parameters -Name OptionalNames -ErrorAction SilentlyContinue)) {New-ItemProperty -Path HKLM:\SYSTEM\CurrentControlSet\Services\LanmanServer\Parameters -Name OptionalNames -PropertyType Multistring -Value 'mega-hopex'}
