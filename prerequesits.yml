@@ -34,7 +34,17 @@
             win_chocolatey:
                     name: sumatrapdf
                     state: present
-
+                    
+          - name: Install 7zip
+            win_chocolatey:
+                    name: 7zip
+                    state: present
+                    
+          - name: Install VisualStudio2019
+            win_chocolatey:
+                    name: visualstudio2019community
+                    state: present
+                    
 
 - name: Users & Groups Configuration
   hosts: all
