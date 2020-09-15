@@ -42,7 +42,7 @@
                     
           - name: Install VisualStudio2019
             win_chocolatey:
-                    name: visualstudio2019community
+                    name: visualstudio2017community
                     state: present
                     
 
