@@ -45,6 +45,10 @@
                     name: visualstudio2017community
                     state: present
                     
+          - name: Install Notepad++
+            win_chocolatey:
+                    name: notepadplusplus
+                    state: present                    
 
 - name: Users & Groups Configuration
   hosts: all
