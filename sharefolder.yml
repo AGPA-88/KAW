@@ -5,12 +5,12 @@
 
           - name: Create directory structure
             win_file:
-                    path: C:\licence
+                    path: C:\Licence
                     state: directory
 
           - name: Add IIS_IUSRS allow rights
             win_acl:
-                    path: C:\license
+                    path: C:\Licence
                     user: IIS_IUSRS
                     rights: FullControl
                     type: allow
@@ -20,9 +20,9 @@
  
           - name: Add public company share
             win_share:
-                    name: license
+                    name: Licence
                     description: Licence shared folder
-                    path: C:\licence
+                    path: C:\Licence
                     list: 'yes'
                     full: Everyone
                     
