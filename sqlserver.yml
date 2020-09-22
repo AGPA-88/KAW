@@ -27,7 +27,7 @@
                         $user = "vagrant"
                         $pwd = ConvertTo-SecureString "vagrant" -AsPlainText -Force
                         $Credential = New-Object System.Management.Automation.PSCredential($user,$pwd)
-                        Set-SqlAuthenticationMode -Credential $Credential -Mode Mixed -ForceServiceRestart -AcceptSelfSignedCertificate
+                        Get-SqlInstance -Credential $Credential -MachineName "localhost" | Set-SqlAuthenticationMode -Credential $Credential -Mode Mixed -SqlCredential $sqlCredential -NoServiceRestart -AcceptSelfSignedCertificate
             
           - name: create SQL User
             win_shell: |
