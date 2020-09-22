@@ -8,17 +8,7 @@
                     state: present
                     include_sub_features: yes
                     include_management_tools: yes
-            register: win_feature
-     
-          - name: Install SQL Server
-            win_chocolatey:
-                    name: sql-server-2017
-                    state: present
-                    
-          - name: Install SQL Server Management Studio
-            win_chocolatey:
-                    name: sql-server-management-studio
-                    state: present
+            register: win_feature 
 
           - name: Install Firefox
             win_chocolatey:
