@@ -1,0 +1,44 @@
+---
+- name: Install SQL Server and add configs
+  hosts: all
+  tasks:
+          - name: Install powershell module 
+            win_psmodule:
+                    name: SqlServer
+                    state: present
+
+          - name: Install powershell module 
+            win_psmodule:
+                    name: SQLPS
+                    state: present
+
+          - name: Install SQL Server
+            win_chocolatey:
+                    name: sql-server-2017
+                    state: present
+                    
+          - name: Install SQL Server Management Studio
+            win_chocolatey:
+                    name: sql-server-management-studio
+                    state: present
+                    
+          - name: activate SQL User authentication
+            win_shell: Set-SqlAuthenticationMode -Credential $Credential -Mode Mixed -ForceServiceRestart -AcceptSelfSignedCertificate
+            
+           - name: create SQL User
+             win_shell: |
+                        $instanceName = "localhost"
+                        $loginName = "marte_user"
+                        $dbUserName = "marte_user"
+                        $password = "p@ssw0rd!"
+                        $roleName = "db_owner"
+                        $server = New-Object -TypeName Microsoft.SqlServer.Management.Smo.Server -ArgumentList $instanceName
+                        $login = New-Object `
+                        -TypeName Microsoft.SqlServer.Management.Smo.Login `
+                        -ArgumentList $server, $loginName
+                        $login.LoginType = [Microsoft.SqlServer.Management.Smo.LoginType]::SqlLogin
+                        $login.PasswordExpirationEnabled = $false
+                        $login.Create($password)
+                        
+           - name: add and grant login in SQL Server
+             win_shell: Add-SqlLogin -ServerInstance localhost -LoginName marte_user -LoginType SqlLogin -GrantConnectSql -Enable
