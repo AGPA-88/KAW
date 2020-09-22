@@ -30,18 +30,14 @@
             
           - name: create SQL User
             win_shell: |
-                       $instanceName = "localhost"
-                       $loginName = "marte_user"
-                       $dbUserName = "marte_user"
-                       $password = "p@ssw0rd!"
-                       $roleName = "db_owner"
-                       $server = New-Object -TypeName Microsoft.SqlServer.Management.Smo.Server -ArgumentList $instanceName
-                       $login = New-Object `
-                       -TypeName Microsoft.SqlServer.Management.Smo.Login `
-                       -ArgumentList $server, $loginName
-                       $login.LoginType = [Microsoft.SqlServer.Management.Smo.LoginType]::SqlLogin
-                       $login.PasswordExpirationEnabled = $false
-                       $login.Create($password)
+                        $s = new-object ('Microsoft.SqlServer.Management.Smo.Server') $env:computer
+                        $SQLLogin = [Microsoft.SqlServer.Management.Smo.Login]::New($s, 'marte_user')
+                        $SQLLogin.LoginType  = [Microsoft.SqlServer.Management.Smo.LoginType]::SqlLogin
+                        $SQLLogin.PasswordPolicyEnforced  = $False
+                        $SQLLogin.Create('p4ssw0rd!')
                         
           - name: add and grant login in SQL Server
-            win_shell: Add-SqlLogin -ServerInstance localhost -LoginName marte_user -LoginType SqlLogin -GrantConnectSql -Enable
+            win_shell: |
+                         $SQLLogin = New-Object -TypeName Microsoft.SqlServer.Management.Smo.Login -ArgumentList $s, "marte_user"
+                         $SQLLogin.AddToRole("bulkadmin")
+                         $SQLLogin.AddToRole("dbcreator")
