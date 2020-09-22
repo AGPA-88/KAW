@@ -1,0 +1,27 @@
+---
+- name: Install SQL Server and add configs
+  hosts: all
+  tasks:
+          - name: Install powershell module 
+            win_psmodule:
+                    name: SQLPS
+                    state: present
+
+          - name: Install SQL Server
+            win_chocolatey:
+                    name: sql-server-2017
+                    state: present
+                    
+          - name: Install SQL Server Management Studio
+            win_chocolatey:
+                    name: sql-server-management-studio
+                    state: present
+                    
+          - name: activate SQL User authentication
+            win_shell: "[System.Reflection.Assembly]::LoadWithPartialName('Microsoft.SqlServer.Smo') | Out-Null; $s = new-object ('Microsoft.SqlServer.Management.Smo.Server') $env:computer; $s.Settings.LoginMode = [Microsoft.SqlServer.Management.SMO.ServerLoginMode]::Mixed; $s.Alter()"
+            
+          - name: create SQL User
+            win_shell: "[System.Reflection.Assembly]::LoadWithPartialName('Microsoft.SqlServer.Smo') | Out-Null; $s = new-object ('Microsoft.SqlServer.Management.Smo.Server') $env:computer; if (($s.logins).Name -contains 'marte_user') {} else {$SQLLogin = [Microsoft.SqlServer.Management.Smo.Login]::New($s, 'marte_user'); $SQLLogin.LoginType  = [Microsoft.SqlServer.Management.Smo.LoginType]::SqlLogin; $SQLLogin.PasswordPolicyEnforced  = $False; $SQLLogin.Create('p4ssw0rd!')}"
+                        
+          - name: add and grant login in SQL Server
+            win_shell: "[System.Reflection.Assembly]::LoadWithPartialName('Microsoft.SqlServer.Smo') | Out-Null; $s = new-object ('Microsoft.SqlServer.Management.Smo.Server') $env:computer; $SQLLogin = New-Object -TypeName Microsoft.SqlServer.Management.Smo.Login -ArgumentList $s, 'marte_user'; $SQLLogin.AddToRole('bulkadmin'); $SQLLogin.AddToRole('dbcreator')"
