@@ -20,9 +20,9 @@
                     name: sql-server-management-studio
                     state: present
 
-          - name: Install Chrome
+          - name: Install Firefox
             win_chocolatey:
-                    name: googlechrome
+                    name: firefox
                     state: present
                     
           - name: Install Git
