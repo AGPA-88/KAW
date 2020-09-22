@@ -24,7 +24,9 @@
                     
           - name: activate SQL User authentication
             win_shell: |
-                        $cred = New-Object System.Management.Automation.PSCredential (vagrant, vagrant)
+                        $user = "vagrant"
+                        $pwd = ConvertTo-SecureString "vagrant" -AsPlainText -Force
+                        $Credential = New-Object System.Management.Automation.PSCredential($user,$pwd)
                         Set-SqlAuthenticationMode -Credential $Credential -Mode Mixed -ForceServiceRestart -AcceptSelfSignedCertificate
             
           - name: create SQL User
