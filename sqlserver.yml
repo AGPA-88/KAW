@@ -24,10 +24,11 @@
                     
           - name: activate SQL User authentication
             win_shell: |
-                        $user = "vagrant"
-                        $pwd = ConvertTo-SecureString "vagrant" -AsPlainText -Force
-                        $Credential = New-Object System.Management.Automation.PSCredential($user,$pwd)
-                        Get-SqlInstance -Credential $Credential -MachineName "localhost" | Set-SqlAuthenticationMode -Credential $Credential -Mode Mixed -SqlCredential $sqlCredential -NoServiceRestart -AcceptSelfSignedCertificate
+                        $comp = $env:ComputerName
+                        $sql = [Microsoft.SqlServer.Management.Smo.Server]::new("$comp\SQLTEST")
+                        $sql.Settings.LoginMode = 'Mixed'
+                        $sql.Alter()
+                        Get-Service -Name 'MSSQL$SQLTEST' | Restart-Service -Force
             
           - name: create SQL User
             win_shell: |
