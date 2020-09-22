@@ -4,11 +4,6 @@
   tasks:
           - name: Install powershell module 
             win_psmodule:
-                    name: SqlServer
-                    state: present
-
-          - name: Install powershell module 
-            win_psmodule:
                     name: SQLPS
                     state: present
 
