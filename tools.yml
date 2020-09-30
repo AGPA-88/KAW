@@ -1,0 +1,21 @@
+---
+- name: Install Applications
+  hosts: all
+  vars_prompt:
+          - name: install_vs2017
+            prompt: "Install VS2017? \n 0.no \n 1.yes \nyour choice (O or 1)"
+            private: no
+          - name: install_notepadpp
+            prompt: "Install Notepad++? \n 0.no \n 1.yes \nyour choice (O or 1)"
+            private: no            
+  tasks:
+          - name: Install VisualStudio2017
+            win_chocolatey:
+                    name: visualstudio2017community
+                    state: present
+            when: install_vs2017 | bool
+          - name: Install Notepad++
+            win_chocolatey:
+                    name: notepadplusplus
+                    state: present
+            when: install_notepadpp | bool
