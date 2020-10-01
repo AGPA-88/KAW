@@ -2,11 +2,6 @@
 - name: Install SQL Server and add configs
   hosts: all
   tasks:
-          - name: Install powershell module 
-            win_psmodule:
-                    name: SQLPS
-                    state: present
-
           - name: Install SQL Server
             win_chocolatey:
                     name: sql-server-2017
@@ -15,6 +10,11 @@
           - name: Install SQL Server Management Studio
             win_chocolatey:
                     name: sql-server-management-studio
+                    state: present
+                
+          - name: Install powershell module 
+            win_psmodule:
+                    name: SQLPS
                     state: present
                     
           - name: activate SQL User authentication
