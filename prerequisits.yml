@@ -8,42 +8,7 @@
                     state: present
                     include_sub_features: yes
                     include_management_tools: yes
-            register: win_feature 
-
-          - name: Install Firefox
-            win_chocolatey:
-                    name: firefox
-                    state: present
-                    
-          - name: Install Git
-            win_chocolatey:
-                    name: git
-                    state: present
-
-          - name: Instal VsCode
-            win_chocolatey:
-                    name: vscode
-                    state: present
-
-          - name: Install SumatraPDF
-            win_chocolatey:
-                    name: sumatrapdf
-                    state: present
-                    
-          - name: Install 7zip
-            win_chocolatey:
-                    name: 7zip
-                    state: present
-                    
-          - name: Install VisualStudio2017
-            win_chocolatey:
-                    name: visualstudio2017community
-                    state: present
-                    
-          - name: Install Notepad++
-            win_chocolatey:
-                    name: notepadplusplus
-                    state: present                    
+            register: win_feature             
 
 - name: Users & Groups Configuration
   hosts: all
