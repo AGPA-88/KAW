@@ -1,1 +1,1 @@
-wsl ansible-playbook -i /etc/ansible/windows /etc/ansible/KAW/prerequisits.yml
+wsl ansible-playbook -i /etc/ansible/windows /mnt/c/windows/system32/KAW-master/prerequisits.yml
