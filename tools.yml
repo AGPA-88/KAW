@@ -29,3 +29,23 @@
                     name: vscode
                     state: present
             when: install_vscode | bool
+            
+          - name: Install Firefox
+            win_chocolatey:
+                    name: firefox
+                    state: present
+                    
+          - name: Install Git
+            win_chocolatey:
+                    name: git
+                    state: present
+
+          - name: Install SumatraPDF
+            win_chocolatey:
+                    name: sumatrapdf
+                    state: present
+                    
+          - name: Install 7zip
+            win_chocolatey:
+                    name: 7zip
+                    state: present    
