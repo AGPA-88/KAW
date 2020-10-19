@@ -7,15 +7,45 @@
             private: no
           - name: install_notepadpp
             prompt: "Install Notepad++? \n 0.no \n 1.yes \nyour choice (O or 1)"
-            private: no            
+            private: no
+          - name: install_vscode
+            prompt: "Install visual studio code? \n 0.no \n 1.yes \nyour choice (O or 1)"
+            private: no
   tasks:
           - name: Install VisualStudio2017
             win_chocolatey:
                     name: visualstudio2017community
                     state: present
             when: install_vs2017 | bool
+            
           - name: Install Notepad++
             win_chocolatey:
                     name: notepadplusplus
                     state: present
             when: install_notepadpp | bool
+
+          - name: Instal VsCode
+            win_chocolatey:
+                    name: vscode
+                    state: present
+            when: install_vscode | bool
+            
+          - name: Install Firefox
+            win_chocolatey:
+                    name: firefox
+                    state: present
+                    
+          - name: Install Git
+            win_chocolatey:
+                    name: git
+                    state: present
+
+          - name: Install SumatraPDF
+            win_chocolatey:
+                    name: sumatrapdf
+                    state: present
+                    
+          - name: Install 7zip
+            win_chocolatey:
+                    name: 7zip
+                    state: present    
