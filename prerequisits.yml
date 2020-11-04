@@ -17,7 +17,7 @@
           - name: Create service user
             win_user:
                     name: svc_marte_user
-                    password: p4ssw0rd!
+                    password: P4ssw0rd!
                     state: present
                     groups:
                             - Users
