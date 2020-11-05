@@ -1,0 +1,18 @@
+---
+
+- name: SSP and Watchdog Services
+  hosts: all
+  tasks:
+    - name: MGWSWD | Set the log on user to a local account
+      win_service: 
+        name: Hopex Service Watchdog
+        state: started
+        username: .\svc_marte_user
+        password: P4ssw0rd!
+
+    - name: MGWSSP | Set the log on user to a local account
+      win_service: 
+        name: Hopex Site Service Provider
+        state: started
+        username: .\svc_marte_user
+        password: P4ssw0rd!
