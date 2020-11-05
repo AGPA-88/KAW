@@ -16,3 +16,47 @@
         state: started
         username: .\svc_marte_user
         password: P4ssw0rd!
+
+    - name: MEGASSP | Set identity of application pool
+      win_iis_webapppool:
+        name: MEGASSP
+        state: started
+        attributes:
+          managedPipelineMode: Integrated
+          processModel.identityType: SpecificUser
+          processModel.userName: .\svc_marte_user
+          processModel.password: P4ssw0rd!
+          processModel.loadUserProfile: True
+
+    - name: HOPEX | Set identity of application pool
+      win_iis_webapppool:
+        name: HOPEX
+        state: started
+        attributes:
+          managedPipelineMode: Integrated
+          processModel.identityType: SpecificUser
+          processModel.userName: .\svc_marte_user
+          processModel.password: P4ssw0rd!
+          processModel.loadUserProfile: True
+
+    - name: HOPEXMWAS | Set identity of application pool
+      win_iis_webapppool:
+        name: HOPEXMWAS
+        state: started
+        attributes:
+          managedPipelineMode: Integrated
+          processModel.identityType: SpecificUser
+          processModel.userName: .\svc_marte_user
+          processModel.password: P4ssw0rd!
+          processModel.loadUserProfile: True
+
+    - name: UAS | Set identity of application pool
+      win_iis_webapppool:
+        name: UAS
+        state: started
+        attributes:
+          managedPipelineMode: Integrated
+          processModel.identityType: SpecificUser
+          processModel.userName: .\svc_marte_user
+          processModel.password: P4ssw0rd!
+          processModel.loadUserProfile: True
