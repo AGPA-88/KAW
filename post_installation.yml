@@ -1,0 +1,72 @@
+---
+
+- name: Hopex post installation tasks
+  hosts: all
+  tasks:
+    - name: Add IIS_IUSRS allow rights
+      win_acl:
+        path: C:\Program Files (x86)\MEGA
+        user: IIS_IUSRS
+        rights: FullControl
+        type: allow
+        state: present
+        inherit: ContainerInherit, ObjectInherit
+        propagation: 'None'
+
+    - name: MGWSWD | Set the log on user to a local account
+      win_service: 
+        name: Hopex Service Watchdog
+        state: started
+        username: .\svc_marte_user
+        password: P4ssw0rd!
+
+    - name: MGWSSP | Set the log on user to a local account
+      win_service: 
+        name: Hopex Site Service Provider
+        state: started
+        username: .\svc_marte_user
+        password: P4ssw0rd!
+
+    - name: MEGASSP | Set identity of application pool
+      win_iis_webapppool:
+        name: MEGASSP
+        state: started
+        attributes:
+          managedPipelineMode: Integrated
+          processModel.identityType: SpecificUser
+          processModel.userName: .\svc_marte_user
+          processModel.password: P4ssw0rd!
+          processModel.loadUserProfile: True
+
+    - name: HOPEX | Set identity of application pool
+      win_iis_webapppool:
+        name: HOPEX
+        state: started
+        attributes:
+          managedPipelineMode: Integrated
+          processModel.identityType: SpecificUser
+          processModel.userName: .\svc_marte_user
+          processModel.password: P4ssw0rd!
+          processModel.loadUserProfile: True
+
+    - name: HOPEXMWAS | Set identity of application pool
+      win_iis_webapppool:
+        name: HOPEXMWAS
+        state: started
+        attributes:
+          managedPipelineMode: Integrated
+          processModel.identityType: SpecificUser
+          processModel.userName: .\svc_marte_user
+          processModel.password: P4ssw0rd!
+          processModel.loadUserProfile: True
+
+    - name: UAS | Set identity of application pool
+      win_iis_webapppool:
+        name: UAS
+        state: started
+        attributes:
+          managedPipelineMode: Integrated
+          processModel.identityType: SpecificUser
+          processModel.userName: .\svc_marte_user
+          processModel.password: P4ssw0rd!
+          processModel.loadUserProfile: True
