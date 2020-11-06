@@ -1,8 +1,18 @@
 ---
 
-- name: SSP and Watchdog Services
+- name: Hopex post installation tasks
   hosts: all
   tasks:
+    - name: Add IIS_IUSRS allow rights
+      win_acl:
+        path: C:\Program Files (x86)\MEGA
+        user: IIS_IUSRS
+        rights: FullControl
+        type: allow
+        state: present
+        inherit: ContainerInherit, ObjectInherit
+        propagation: 'None'
+
     - name: MGWSWD | Set the log on user to a local account
       win_service: 
         name: Hopex Service Watchdog
