@@ -9,7 +9,7 @@
                     
           - name: Install SQL Server Management Studio
             win_chocolatey:
-                    name: sql-server-management-studio
+                    name: ssms
                     state: present
                 
           - name: Install powershell module 
