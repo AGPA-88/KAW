@@ -17,6 +17,7 @@
       win_service: 
         name: Hopex Service Watchdog
         state: started
+        start_mode: auto
         username: .\svc_marte_user
         password: P4ssw0rd!
 
@@ -24,6 +25,7 @@
       win_service: 
         name: Hopex Site Service Provider
         state: started
+        start_mode: auto
         username: .\svc_marte_user
         password: P4ssw0rd!
 
