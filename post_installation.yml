@@ -18,7 +18,7 @@
         name: Hopex Service Watchdog
         state: started
         start_mode: auto
-        username: .\svc_marte_user
+        username: MEGA-HOPEX\svc_marte_user
         password: P4ssw0rd!
 
     - name: MGWSSP | Set the log on user to a local account
@@ -26,7 +26,7 @@
         name: Hopex Site Service Provider
         state: started
         start_mode: auto
-        username: .\svc_marte_user
+        username: MEGA-HOPEX\svc_marte_user
         password: P4ssw0rd!
 
     - name: MEGASSP | Set identity of application pool
@@ -36,7 +36,7 @@
         attributes:
           managedPipelineMode: Integrated
           processModel.identityType: SpecificUser
-          processModel.userName: .\svc_marte_user
+          processModel.userName: MEGA-HOPEX\svc_marte_user
           processModel.password: P4ssw0rd!
           processModel.loadUserProfile: True
 
@@ -47,7 +47,7 @@
         attributes:
           managedPipelineMode: Integrated
           processModel.identityType: SpecificUser
-          processModel.userName: .\svc_marte_user
+          processModel.userName: MEGA-HOPEX\svc_marte_user
           processModel.password: P4ssw0rd!
           processModel.loadUserProfile: True
 
@@ -58,7 +58,7 @@
         attributes:
           managedPipelineMode: Integrated
           processModel.identityType: SpecificUser
-          processModel.userName: .\svc_marte_user
+          processModel.userName: MEGA-HOPEX\svc_marte_user
           processModel.password: P4ssw0rd!
           processModel.loadUserProfile: True
 
@@ -69,6 +69,6 @@
         attributes:
           managedPipelineMode: Integrated
           processModel.identityType: SpecificUser
-          processModel.userName: .\svc_marte_user
+          processModel.userName: MEGA-HOPEX\svc_marte_user
           processModel.password: P4ssw0rd!
           processModel.loadUserProfile: True
