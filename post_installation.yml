@@ -12,10 +12,18 @@
         state: present
         inherit: ContainerInherit, ObjectInherit
         propagation: 'None'
-
-    - name: MGWSWD | Set the log on user to a local account
+    
+    # This is required to be set for non-service accounts that need to run as a service
+    - name: Grant domain account user right
+      win_user_right:
+        name: SeServiceLogonRight
+        users:
+        - MEGA-HOPEX\svc_marte_user
+        action: add
+        
+    - name: MGWSSP | Grant domain account the Hopex Site Service Provider user right
       win_service: 
-        name: Hopex Service Watchdog
+        name: Hopex Site Service Provider
         state: started
         start_mode: auto
         username: MEGA-HOPEX\svc_marte_user
