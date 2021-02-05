@@ -23,7 +23,7 @@
         
     - name: MGWSSP | Set the log on user to a local account
       win_service: 
-        name: MGWSSP | Set the log on user to a local account
+        name: MGWSSP
         state: started
         start_mode: auto
         username: .\svc_marte_user
