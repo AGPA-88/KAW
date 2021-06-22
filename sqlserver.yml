@@ -25,3 +25,6 @@
                         
           - name: add and grant login in SQL Server
             win_shell: "[System.Reflection.Assembly]::LoadWithPartialName('Microsoft.SqlServer.Smo') | Out-Null; $s = new-object ('Microsoft.SqlServer.Management.Smo.Server') $env:computer; $SQLLogin = New-Object -TypeName Microsoft.SqlServer.Management.Smo.Login -ArgumentList $s, 'marte_user'; $SQLLogin.AddToRole('serveradmin'); $SQLLogin.AddToRole('bulkadmin'); $SQLLogin.AddToRole('dbcreator'); $SQLLogin.AddToRole('setupadmin'); $SQLLogin.AddToRole('sysadmin')"
+            
+          - name: restart SQL services
+            win_shell: "Get-Service -Computer localhost -Name MSSQLSERVER | Stop-Service -Force; Set-Service -Name MSSQLSERVER -Status Running -PassThru"
