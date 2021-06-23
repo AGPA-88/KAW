@@ -24,6 +24,7 @@
             win_user:
                     name: svc_marte_user
                     password: P4ssw0rd!
+                    password_never_expires: true
                     state: present
                     groups:
                             - Users
