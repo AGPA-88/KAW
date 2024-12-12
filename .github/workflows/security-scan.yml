@@ -1,29 +1,28 @@
-name: Trivy Ansible Scan
-
+name: build
 on:
   push:
-    branches: [ "master" ]
+    branches:
+      - master
   pull_request:
-    branches: [ "master" ]
-
 jobs:
-  trivy-scan:
-    name: Trivy Ansible Scan
-    runs-on: ubuntu-latest
+  build:
+    name: Build
+    runs-on: ubuntu-20.04
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
-      - name: Run Trivy vulnerability scanner
-        uses: aquasecurity/trivy-action@master
+      - name: Run Trivy vulnerability scanner in IaC mode
+        uses: aquasecurity/trivy-action@0.28.0
         with:
           scan-type: 'config'
-          scan-ref: '.'
-          format: 'table'
+          hide-progress: true
+          format: 'sarif'
+          output: 'trivy-results.sarif'
           exit-code: '1'
-          ignore-unfixed: true
           severity: 'CRITICAL,HIGH,MEDIUM,LOW'
-          vuln-type: 'os,library'
-          scanners: 'vuln,secret,config'
-          config-data: 'ansible'
 
+      - name: Upload Trivy scan results to GitHub Security tab
+        uses: github/codeql-action/upload-sarif@v3
+        with:
+          sarif_file: 'trivy-results.sarif'
