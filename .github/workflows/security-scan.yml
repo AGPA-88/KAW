@@ -22,6 +22,8 @@ jobs:
           format: 'table'
           exit-code: '1'
           ignore-unfixed: true
-          severity: 'CRITICAL,HIGH'
+          severity: 'CRITICAL,HIGH,MEDIUM,LOW'
           vuln-type: 'os,library'
           scanners: 'vuln,secret,config'
+          config-data: 'ansible'
+
