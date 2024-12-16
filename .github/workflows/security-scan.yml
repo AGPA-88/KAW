@@ -66,9 +66,18 @@ jobs:
         run: | 
          curl -sSL https://raw.githubusercontent.com/bridgecrewio/checkov/master/install.sh | bash
       # Lancer Checkov et générer un fichier SARIF
-      - name: Run Checkov Scan
-        run: |
-         ./checkov -d . --output-file checkov-results.sarif --output-format sarif
+      - name: Run Checkov scan
+        uses: bridgecrewio/checkov-action@master
+        with:
+          directory: .
+          framework: ansible
+          output_format: sarif
+          output_file: checkov-results.sarif
+          
+      - name: Upload SARIF file
+        uses: github/codeql-action/upload-sarif@v3
+        with:
+          sarif_file: checkov-results.sarif
       # Upload des résultats dans GitHub Security
       - name: Upload Checkov SARIF Results
         uses: github/codeql-action/upload-sarif@v3
