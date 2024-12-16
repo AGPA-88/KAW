@@ -11,7 +11,7 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-
+      # 1. Scanner de vulnérabilités avec Trivy
       - name: Run Trivy vulnerability scanner in FS mode - table logs
         uses: aquasecurity/trivy-action@0.28.0
         with:
@@ -37,3 +37,30 @@ jobs:
         uses: github/codeql-action/upload-sarif@v3
         with:
           sarif_file: 'trivy-results.sarif'
+
+          
+       # 2. Analyse de sécurité avec Semgrep
+      - name: Run Semgrep
+        uses: returntocorp/semgrep-action@v1
+        with:
+          config: "p/ansible"  # Analyse spécifique à Ansible
+
+      # 3. Analyse de qualité et de bonnes pratiques avec Ansible Lint
+      - name: Install Ansible Lint
+        run: sudo apt-get update && sudo apt-get install -y ansible-lint
+      - name: Run Ansible Lint
+        run: ansible-lint .
+
+      # 4. Analyse avec Checkov
+      - name: Install Checkov
+        run: | 
+         curl -sSL https://raw.githubusercontent.com/bridgecrewio/checkov/master/install.sh | bash
+      # Lancer Checkov et générer un fichier SARIF
+      - name: Run Checkov Scan
+        run: |
+        ./checkov -d . --output-file checkov-results.sarif --output-format sarif
+    # 3. Upload des résultats dans GitHub Security
+      - name: Upload Checkov SARIF Results
+        uses: github/codeql-action/upload-sarif@v3
+        with:
+          sarif_file: 'checkov-results.sarif'
