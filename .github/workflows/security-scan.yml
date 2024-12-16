@@ -47,7 +47,7 @@ jobs:
           sudo mv semgrep /usr/local/bin/
       - name: Run Semgrep
         run: |
-          semgrep scan --verbose --sarif --output semgrep-results.sarif --config auto .
+          semgrep --autoconfig --output semgrep-results.sarif --sarif
       - name: Upload Semgrep SARIF Results
         uses: github/codeql-action/upload-sarif@v3
         with:
