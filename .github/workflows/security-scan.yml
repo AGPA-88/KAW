@@ -1,4 +1,4 @@
-name: build
+etname: build
 on:
   push:
     branches:
@@ -15,8 +15,9 @@ jobs:
       - name: Run Trivy vulnerability scanner in IaC mode
         uses: aquasecurity/trivy-action@0.28.0
         with:
-          scan-type: 'config'
-          hide-progress: true
+          scan-type: 'fs, config, secret'
+          scan-ref: '.'
+          hide-progress: false
           format: 'sarif'
           output: 'trivy-results.sarif'
           exit-code: '1'
