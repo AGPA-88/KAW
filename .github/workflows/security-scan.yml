@@ -8,6 +8,8 @@ jobs:
   build:
     name: Build
     runs-on: ubuntu-20.04
+    container:
+      image: returntocorp/semgrep
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -41,9 +43,8 @@ jobs:
           
        # 2. Analyse de sécurité avec Semgrep
       - name: Run Semgrep
-        uses: returntocorp/semgrep-action@v1
-        with:
-          config: "p/trailofbits"  # Analyse spécifique à Ansible
+        run: |
+          semgrep scan --verbose --sarif --output semgrep-results.sarif --config auto .
 
       # 3. Analyse de qualité et de bonnes pratiques avec Ansible Lint
       - name: Install Ansible Lint
