@@ -60,12 +60,6 @@ jobs:
         run: ansible-lint .
 
       # 4. Analyse avec Checkov
-      - name: Install Curl
-        run: sudo apt-get update && sudo apt-get install -y curl
-      - name: Install Checkov
-        run: | 
-         curl -sSL https://raw.githubusercontent.com/bridgecrewio/checkov/master/install.sh | bash
-      # Lancer Checkov et générer un fichier SARIF
       - name: Run Checkov scan
         uses: bridgecrewio/checkov-action@master
         with:
