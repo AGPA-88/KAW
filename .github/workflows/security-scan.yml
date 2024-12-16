@@ -47,7 +47,7 @@ jobs:
           pipx install semgrep
       - name: Run Semgrep
         run: |
-          semgrep --autoconfig --output semgrep-results.sarif --sarif
+          semgrep scan --verbose --sarif --output semgrep-results.sarif --config auto .
       - name: Upload Semgrep SARIF Results
         uses: github/codeql-action/upload-sarif@v3
         with:
