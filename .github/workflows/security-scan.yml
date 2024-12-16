@@ -42,10 +42,12 @@ jobs:
       # 2. Analyse de sécurité avec Semgrep
       - name: Install Sempgrp
         run: |
-          curl -L https://github.com/returntocorp/semgrep/releases/latest/download/semgrep-linux-amd64 -o semgrep && chmod +x semgrep
+          python3 -m pip install --user pipx
+          python3 -m pipx ensurepath
+          pipx install semgrep
       - name: Run Semgrep
         run: |
-          ./semgrep --autoconfig --output semgrep-results.sarif --sarif
+          semgrep --autoconfig --output semgrep-results.sarif --sarif
       - name: Upload Semgrep SARIF Results
         uses: github/codeql-action/upload-sarif@v3
         with:
@@ -77,7 +79,7 @@ jobs:
       - name: Run KICS Scan
         uses: Checkmarx/kics-github-action@v1.7.0
         with:
-          path: 'path/to/ansible/files'
+          path: '.'
           output_path: kics-results
           platform: ansible
           
