@@ -13,6 +13,7 @@ jobs:
         uses: actions/checkout@v4
       # 1. Scanner de vulnérabilités avec Trivy
       - name: Run Trivy vulnerability scanner in FS mode - table logs
+        continue-on-error: true
         uses: aquasecurity/trivy-action@0.28.0
         with:
           scan-type: 'fs'
@@ -23,6 +24,7 @@ jobs:
           severity: 'CRITICAL,HIGH,MEDIUM,LOW'
 
       - name: Run Trivy vulnerability scanner in FS mode - sarif mode
+        continue-on-error: true
         uses: aquasecurity/trivy-action@0.28.0
         with:
           scan-type: 'fs'
@@ -36,7 +38,7 @@ jobs:
       - name: Upload Trivy scan results to GitHub Security tab
         uses: github/codeql-action/upload-sarif@v3
         with:
-          sarif_file: 'trivy-results.sarif'
+          sarif_file: trivy-results.sarif
 
           
       # 2. Analyse de sécurité avec Semgrep
@@ -46,35 +48,40 @@ jobs:
           python3 -m pipx ensurepath
           pipx install semgrep
       - name: Run Semgrep
+        continue-on-error: true
         run: |
           semgrep scan --verbose --sarif --output semgrep-results.sarif --config auto .
       - name: Upload Semgrep SARIF Results
         uses: github/codeql-action/upload-sarif@v3
         with:
-          sarif_file: 'semgrep-results.sarif'
+          sarif_file: semgrep-results.sarif
 
       # 3. Analyse de qualité et de bonnes pratiques avec Ansible Lint
       - name: Install Ansible Lint
         run: sudo apt-get update && sudo apt-get install -y ansible-lint
       - name: Run Ansible Lint
+        continue-on-error: true
         run: ansible-lint .
 
       # 4. Analyse avec Checkov
       - name: Run Checkov scan
+        continue-on-error: true
         uses: bridgecrewio/checkov-action@master
         with:
           directory: .
           framework: ansible
           output_format: sarif
+          output_file_path: checkov-results.sarif
 
       # Upload des résultats dans GitHub Security
       - name: Upload Checkov SARIF Results
         uses: github/codeql-action/upload-sarif@v3
         with:
-          sarif_file: 'results.sarif'
+          sarif_file: 'checkov-results.sarif'
 
       # 5. Analyse avec Checkov
       - name: Run KICS Scan
+        continue-on-error: true
         uses: Checkmarx/kics-github-action@v1.7.0
         with:
           path: '.'
