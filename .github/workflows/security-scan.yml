@@ -15,35 +15,14 @@ jobs:
       - name: Run Trivy vulnerability scanner in CONFIG mode
         uses: aquasecurity/trivy-action@0.28.0
         with:
-          scan-type: 'config'
+          scan-type: 'config,fs,repository'
           scan-ref: '.'
           hide-progress: false
           format: 'sarif'
           output: 'trivy-results.sarif'
           exit-code: '1'
           severity: 'CRITICAL,HIGH,MEDIUM,LOW'
-
-      - name: Run Trivy vulnerability scanner in IaC mode
-        uses: aquasecurity/trivy-action@0.28.0
-        with:
-          scan-type: 'fs'
-          scan-ref: '.'
-          hide-progress: false
-          format: 'sarif'
-          output: 'trivy-results.sarif'
-          exit-code: '1'
-          severity: 'CRITICAL,HIGH,MEDIUM,LOW'
-
-      - name: Run Trivy vulnerability scanner in SECRET mode
-        uses: aquasecurity/trivy-action@0.28.0
-        with:
-          scan-type: 'repository sbom'
-          scan-ref: '.'
-          hide-progress: false
-          format: 'sarif'
-          output: 'trivy-results.sarif'
-          exit-code: '1'
-          severity: 'CRITICAL,HIGH,MEDIUM,LOW'
+          scanners: 'vuln,secret,config,license'
 
       - name: Upload Trivy scan results to GitHub Security tab
         uses: github/codeql-action/upload-sarif@v3
