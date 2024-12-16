@@ -42,10 +42,10 @@ jobs:
       # 2. Analyse de sécurité avec Semgrep
       - name: Install Sempgrp
         run: |
-          curl -L https://github.com/returntocorp/semgrep/releases/latest/download/semgrep-linux-amd64 -o semgrep && chmod +x semgrep && sudo mv semgrep /usr/local/bin/
+          curl -L https://github.com/returntocorp/semgrep/releases/latest/download/semgrep-linux-amd64 -o semgrep && chmod +x semgrep
       - name: Run Semgrep
         run: |
-          semgrep --autoconfig --output semgrep-results.sarif --sarif
+          ./semgrep --autoconfig --output semgrep-results.sarif --sarif
       - name: Upload Semgrep SARIF Results
         uses: github/codeql-action/upload-sarif@v3
         with:
@@ -67,8 +67,21 @@ jobs:
       - name: Run Checkov Scan
         run: |
          ./checkov -d . --output-file checkov-results.sarif --output-format sarif
-    # 3. Upload des résultats dans GitHub Security
+      # Upload des résultats dans GitHub Security
       - name: Upload Checkov SARIF Results
         uses: github/codeql-action/upload-sarif@v3
         with:
           sarif_file: 'checkov-results.sarif'
+
+      # 5. Analyse avec Checkov
+      - name: Run KICS Scan
+        uses: Checkmarx/kics-github-action@v1.7.0
+        with:
+          path: 'path/to/ansible/files'
+          output_path: kics-results
+          platform: ansible
+          
+      - name: Upload SARIF file
+        uses: github/codeql-action/upload-sarif@v3
+        with:
+          sarif_file: kics-results/results.sarif
