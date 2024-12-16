@@ -66,13 +66,12 @@ jobs:
           directory: .
           framework: ansible
           output_format: sarif
-          output_file: checkov-results.sarif
 
       # Upload des résultats dans GitHub Security
       - name: Upload Checkov SARIF Results
         uses: github/codeql-action/upload-sarif@v3
         with:
-          sarif_file: 'checkov-results.sarif'
+          sarif_file: 'results.sarif'
 
       # 5. Analyse avec Checkov
       - name: Run KICS Scan
