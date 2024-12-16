@@ -58,7 +58,7 @@ jobs:
       # Lancer Checkov et générer un fichier SARIF
       - name: Run Checkov Scan
         run: |
-        ./checkov -d . --output-file checkov-results.sarif --output-format sarif
+         ./checkov -d . --output-file checkov-results.sarif --output-format sarif
     # 3. Upload des résultats dans GitHub Security
       - name: Upload Checkov SARIF Results
         uses: github/codeql-action/upload-sarif@v3
