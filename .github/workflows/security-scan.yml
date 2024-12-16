@@ -42,9 +42,7 @@ jobs:
       # 2. Analyse de sécurité avec Semgrep
       - name: Install Sempgrp
         run: |
-          curl -L https://github.com/returntocorp/semgrep/releases/latest/download/semgrep-linux-amd64 -o semgrep
-          chmod +x semgrep
-          sudo mv semgrep /usr/local/bin/
+          curl -L https://github.com/returntocorp/semgrep/releases/latest/download/semgrep-linux-amd64 -o semgrep && chmod +x semgrep && sudo mv semgrep /usr/local/bin/
       - name: Run Semgrep
         run: |
           semgrep --autoconfig --output semgrep-results.sarif --sarif
