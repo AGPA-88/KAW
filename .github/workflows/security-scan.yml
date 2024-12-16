@@ -1,4 +1,4 @@
-etname: build
+name: build
 on:
   push:
     branches:
