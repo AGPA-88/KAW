@@ -43,7 +43,7 @@ jobs:
       - name: Run Semgrep
         uses: returntocorp/semgrep-action@v1
         with:
-          config: "p/ansible"  # Analyse spécifique à Ansible
+          config: "p/trailofbits"  # Analyse spécifique à Ansible
 
       # 3. Analyse de qualité et de bonnes pratiques avec Ansible Lint
       - name: Install Ansible Lint
@@ -52,6 +52,8 @@ jobs:
         run: ansible-lint .
 
       # 4. Analyse avec Checkov
+      - name: Install Curl
+        run: sudo apt-get update && sudo apt-get install -y curl
       - name: Install Checkov
         run: | 
          curl -sSL https://raw.githubusercontent.com/bridgecrewio/checkov/master/install.sh | bash
